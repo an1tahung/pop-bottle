@@ -1,9 +1,9 @@
 @total_bottles = 0
-@re_bottles = 0
+@bottles = 0
 @caps = 0
 
 
-def bottles(investment)
+def buy_pop(investment)
 
   @fullbottles = investment / 2
   @total_bottles += @fullbottles
@@ -11,19 +11,35 @@ def bottles(investment)
 end
 
 def howmany
-
-  @re_bottles += @fullbottles
+#when looped the second time this adds my leftover previously unredeemed caps and bottles 
+#to the redeemable caps and bottles from my redeemed full bottles
+  @bottles += @fullbottles 
   @caps += @fullbottles 
-  @fullbottles = 0
+  #reset to zero because once I seperate the full bottles into
+  #bottles and caps they are no longer full bottles
+  @fullbottles = 0 
+
 
 end
 
 def redeem
 
-@fullbottles = @fullbottles + @re_bottles/2 + @caps/4
-@total_bottles += @fullbottles
-@caps = @caps % 4
-@re_bottles = @re_bottles % 2
+  @fullbottles = @bottles/2 + @caps/4 #shows how many full bottles I get when I redeem bottles and caps
+  @totalbottles = @total_bottles += @fullbottles #adds to total bottles
+  @caps = @caps % 4 #shows how many caps get left over once caps are redeemed
+  @bottles = @bottles % 2 #shows how many bottles are left once bottles are redeemed
+
+end
+
+def result
+  until @caps < 4 && @bottles < 2 && @fullbottles < 1
+  howmany
+  redeem
+  end
+
+puts "You get #{@total_bottles} bottles total."
+puts "You have #{@bottles} bottle left over."
+puts "You have #{@caps} caps left over."
 
 end
 
@@ -33,16 +49,13 @@ end
 print "How much money would you like to spend?"
 investment = gets.chomp.to_i
 
-bottles(investment)
+buy_pop(investment)
+result
 
-until @caps < 4 && @re_bottles < 2 && @fullbottles < 1
-howmany
-redeem
-end
+# buy_pop(20)
+# result
 
-puts "You get #{@total_bottles} bottles total."
-puts "You have #{@re_bottles} bottle left over."
-puts "You have #{@caps} caps left over."
+
 
 #should return 35 bottles total
 
